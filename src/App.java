@@ -10,6 +10,12 @@ public class App {
         showPlanet(scanner);
         var locationInit = "Tierra";
 
+        /*
+         * Seleccionar destino interplanetario
+         * - Permitir al usuario elegir un planeta destino entre una lista de planetas del
+         * sistema solar (Mercurio, Venus, Marte, Júpiter, Saturno, etc.).
+         */
+
     }
 
     private static void loadBarr() throws InterruptedException {
@@ -49,7 +55,7 @@ public class App {
         System.out.println("\nTodos los sistemas en linea!\n");
     }
 
-    private static void showPlanet(Scanner scanner){
+    private static void showPlanet(Scanner scanner) {
         // Planetas disponibles para viajar
         /*
          * "Ninguno", // Índice 0 no se usa
@@ -60,7 +66,7 @@ public class App {
          * "Saturno", // Saturno
          * "Urano", // Urano
          * "Neptuno" // Neptuno
-         * "Tierra" 
+         * "Tierra"
          */
 
         int option;
@@ -84,22 +90,22 @@ public class App {
                     planetMercurio();
                     break;
                 default:
-                System.err.println("Ingrese una opcion valida.");
+                    System.err.println("Ingrese una opcion valida.");
                     break;
             }
-            if (option!=0) {
+            if (option != 0) {
                 pressEnter(scanner);
-            } 
+            }
         } while (option != 0);
         System.out.println("Opcion no valida, por favor escoja un planeta dentro de las opciones");
     }
 
     private static void planetMercurio() {
         System.out.println("Hola mundo");
-        
+
     }
-    
-    private static void pressEnter(Scanner scanner){
+
+    private static void pressEnter(Scanner scanner) {
         System.out.println("Presione ENTER para continuar");
         scanner.nextLine();
     }
