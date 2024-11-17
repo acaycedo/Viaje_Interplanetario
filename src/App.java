@@ -7,8 +7,8 @@ public class App {
         System.out.println("INSERTAR BIENVENIDA");
         System.out.println("etc Y MAS DETALLES");
         loadBarr();
-        showPlanet(scanner);
-        var locationInit = "Tierra";
+        showMenu(scanner);
+        scanner.close();
 
         /*
          * Seleccionar destino interplanetario
@@ -83,11 +83,15 @@ public class App {
             System.out.println("5. Saturno");
             System.out.println("6. Urano");
             System.out.println("7. Neptuno");
+            System.out.println("0. Para salir");
             option = scanner.nextInt();
             scanner.nextLine();
             switch (option) {
                 case 1:
                     planetMercurio();
+                    break;
+                case 0:
+                    System.out.println("Hasta Pronto");
                     break;
                 default:
                     System.err.println("Ingrese una opcion valida.");
@@ -97,7 +101,6 @@ public class App {
                 pressEnter(scanner);
             }
         } while (option != 0);
-        System.out.println("Opcion no valida, por favor escoja un planeta dentro de las opciones");
     }
 
     private static void planetMercurio() {
@@ -109,5 +112,37 @@ public class App {
         System.out.println("Presione ENTER para continuar");
         scanner.nextLine();
     }
+
+    private static void showMenu(Scanner scanner){
+        int option;
+
+        do {
+            System.out.println("OPCIONES DISPONIBLES PARA EMPEZAR EL VIAJE");
+            System.out.println("---------------------------------");
+            System.out.println("Seleccione alguna de las opciones para cargar el viaje: ");
+            System.out.println("1. Seleccionar Planeta.");
+            System.out.println("2. Seleccionar Velocidad");
+            System.out.println("3. Seleccionar Recursos");
+            System.out.println("4. Sleeccionar tipo de nave");
+            System.out.println("0. Salir");
+            option = scanner.nextInt();
+            scanner.nextLine();
+            switch (option) {
+                case 1:
+                    showPlanet(scanner);
+                    break;
+                case 0:
+                    System.out.println("Enviando información...");
+                default:
+                    System.err.println("Ingrese una opcion valida.");
+                    break;
+            }
+            if (option != 0) {
+                pressEnter(scanner);
+            }
+        } while (option != 0);
+    }
+
+
 
 }
