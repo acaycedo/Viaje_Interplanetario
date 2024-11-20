@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    static double[] distants = { 123, 234, 123, 2132134, 123123, 213123, 12313 };
+    static double[] distants = { 123, 234, 123, 2132134, 123123, 213123, 12313, 2093939 };
     static double[] velocidad = { 200000.0, 10000.1, 50000.2 };
     static Scanner scanner = new Scanner(System.in);
 
