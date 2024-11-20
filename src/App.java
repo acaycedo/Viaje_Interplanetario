@@ -1,21 +1,55 @@
+
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
+    static double[] distants = { 123, 234, 123, 2132134, 123123, 213123, 12313 };
+    static double[] velocidad = { 200000.0, 10000.1, 50000.2 };
+    static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) throws Exception {
-        var scanner = new Scanner(System.in);
-        System.out.println("INSERTAR LOGO NAVE");
-        System.out.println("INSERTAR BIENVENIDA");
-        System.out.println("etc Y MAS DETALLES");
-        loadBarr();
-        showPlanet(scanner);
-        var locationInit = "Tierra";
 
         /*
-         * Seleccionar destino interplanetario
-         * - Permitir al usuario elegir un planeta destino entre una lista de planetas del
-         * sistema solar (Mercurio, Venus, Marte, Júpiter, Saturno, etc.).
+         * System.out.println("INSERTAR LOGO NAVE");
+         * System.out.println("INSERTAR BIENVENIDA");
+         * System.out.println("etc Y MAS DETALLES");
+         * loadBarr();
          */
+        
+        int option;
+        do {
+            System.out.println("OPCIONES DISPONIBLES PARA EMPEZAR EL VIAJE");
+            System.out.println("---------------------------------");
+            System.out.println("Seleccione alguna de las opciones para cargar el viaje: ");
+            System.out.println("1. Seleccionar Planeta.");
+            System.out.println("2. Seleccionar velocidad");
+            System.out.println("3. Seleccionar Recursos");
+            System.out.println("4. Seleccionar tipo de nave");
+            System.out.println("0. Salir");
+            option = scanner.nextInt();
+            scanner.nextLine();
+            switch (option) {
+                case 1:
+                    selectPlanet();
+                    break;
+                case 2:
+                    break;
+                case 4:
+                    selectNave();
+                    break;
+                case 0:
+                    System.out.println("Viaje cancelado");
+                    break;
+                default:
+                    System.err.println("Ingrese una opcion valida.");
+                    break;
+            }
+            if (option != 0) {
+                pressEnter();
+            }
+        } while (option != 0);
 
+        scanner.close();
     }
 
     private static void loadBarr() throws InterruptedException {
@@ -55,59 +89,46 @@ public class App {
         System.out.println("\nTodos los sistemas en linea!\n");
     }
 
-    private static void showPlanet(Scanner scanner) {
-        // Planetas disponibles para viajar
-        /*
-         * "Ninguno", // Índice 0 no se usa
-         * "Mercurio", // Mercurio
-         * "Venus", // Venus
-         * "Marte", // Marte
-         * "Júpiter", // Júpiter
-         * "Saturno", // Saturno
-         * "Urano", // Urano
-         * "Neptuno" // Neptuno
-         * "Tierra"
-         */
-
+    private static void selectPlanet() {
+        var sc = new Scanner(System.in);
         int option;
-
+        var selectPlanet = false;  // Declarar option fuera del do-while para usarla en la condición del bucle.
         do {
-
+            var planets = List.of("Marte","Mercurio","Venus","Júpiter","Saturno","Urano","Neptuno");
+    
             System.out.println("PLANETAS DISPONIBLES PARA VIAJAR");
             System.out.println("---------------------------------");
             System.out.println("Estimado tripulante selecciones uno de los siguientes planetas para viajar: ");
-            System.out.println("1. Mercurio");
-            System.out.println("2. Venus");
-            System.out.println("3. Marte");
+            System.out.println("1. Marte");
+            System.out.println("2. Mercurio");
+            System.out.println("3. Venus");
             System.out.println("4. Júpiter");
             System.out.println("5. Saturno");
             System.out.println("6. Urano");
             System.out.println("7. Neptuno");
-            option = scanner.nextInt();
-            scanner.nextLine();
-            switch (option) {
-                case 1:
-                    planetMercurio();
-                    break;
-                default:
-                    System.err.println("Ingrese una opcion valida.");
-                    break;
+            System.out.println("0. Para salir");
+    
+            option = sc.nextInt();  // Leer la opción del usuario
+    
+            // Asegurarse de que la opción esté en el rango correcto (1-7), de lo contrario, no hacer nada.
+            if (option >= 1 && option <= planets.size()) {
+                var planet = planets.get(option - 1);  // Ajustar para que el índice comience desde 0
+                System.out.println("Has seleccionado: " + planet);
+                selectPlanet=true;
+            } else if (option != 0) {
+                System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
             }
-            if (option != 0) {
-                pressEnter(scanner);
-            }
-        } while (option != 0);
-        System.out.println("Opcion no valida, por favor escoja un planeta dentro de las opciones");
+        } while (!selectPlanet);  // El bucle continuará hasta que el usuario seleccione la opción 0.
+    
+        sc.close();  // Cerrar el scanner al finalizar.
     }
-
-    private static void planetMercurio() {
-        System.out.println("Hola mundo");
-
-    }
-
-    private static void pressEnter(Scanner scanner) {
+    
+    private static void pressEnter() {
         System.out.println("Presione ENTER para continuar");
         scanner.nextLine();
+    }
+
+    private static void selectNave() {
     }
 
 }
