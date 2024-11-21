@@ -10,10 +10,11 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         
-         System.out.println("=================================================");
-         System.out.println("     BIENVENIDO A ESTE VIAJE INTERPLANETARIO");
-         System.out.println("PREPARA TUS MALETAS Y VAMOS A ESTA GRAN AVENTURA");
-         System.out.println("=================================================");
+         System.out.println(" ==================================================");
+         System.out.println("       BIENVENIDO A ESTE VIAJE INTERPLANETARIO");
+         System.out.println("  PREPARA TUS MALETAS Y VAMOS A ESTA GRAN AVENTURA");
+         System.out.println("  (recuerda tu punto inicial es el planeta tierra)");
+         System.out.println(" ==================================================");
          
          /*
          * loadBarr();
@@ -24,10 +25,9 @@ public class App {
             System.out.println("|||   OPCIONES DISPONIBLES PARA EMPEZAR EL VIAJE  |||");
             System.out.println("||       Selecciona para el proceso del viaje!     ||");
             System.out.println("|1.-------------Seleccionar Planeta.----------------|");
-            System.out.println("|2.-------------Seleccionar velocidad.--------------|");
+            System.out.println("|2.-------------Selecciona la velocidad.------------|");
             System.out.println("|3.-------------Seleccionar Recursos.---------------|");
-            System.out.println("|4.-------------Seleccionar tipo de nave.-----------|");
-            System.out.println("|5.-------------Salir.------------------------------|");
+            System.out.println("|4.-------------Salir.------------------------------|");
             option = scanner.nextInt();
             scanner.nextLine();
             switch (option) {
@@ -40,9 +40,6 @@ public class App {
                     selectNave();
                     break;
                 case 4:
-                    
-                    break;
-                case 5:
                     System.out.println("Gracias por viajar con nosotros. Vueleve pronto ;D");
                     break;
 
@@ -55,7 +52,7 @@ public class App {
                 pressEnter();
             } */
 
-        } while (option != 5);
+        } while (option != 4);
 
         scanner.close();
     }
