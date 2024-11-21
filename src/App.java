@@ -3,7 +3,17 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App {
+    static String[] planets = {"Marte", "Mercurio", "Venus", "Júpiter", "Saturno", "Urano", "Neptuno"};
     static double[] distants = {78.0, 91.0, 41.0, 628.0, 1275.0, 2724.0, 4351.0};
+    static String[] descripciones = {
+        "Marte es conocido como el planeta rojo debido a su color característico.",
+        "Mercurio es el planeta más cercano al Sol.",
+        "Venus es el planeta más parecido a la Tierra en términos de tamaño y composición.",
+        "Júpiter es el gigante gaseoso más grande del Sistema Solar.",
+        "Saturno es famoso por sus impresionantes anillos, compuestos por hielo y roca.",
+        "Urano es un gigante helado que se distingue por su color azul verdoso.",
+        "Neptuno es el planeta más alejado del Sol."
+    };
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
@@ -24,8 +34,9 @@ public class App {
             System.out.println("|||   OPCIONES DISPONIBLES PARA EMPEZAR EL VIAJE  |||");
             System.out.println("||       Selecciona para el proceso del viaje!     ||");
             System.out.println("|1.-------------Seleccionar Planeta y velocidad.----|");
-            System.out.println("|2.-------------Seleccionar Recursos.---------------|");
-            System.out.println("|3.-------------Salir.------------------------------|");
+            System.out.println("|2.-------------Seleccionar una nave espacial.------|");
+            System.out.println("|3.-------------Seleccionar Recursos.---------------|");
+            System.out.println("|4.-------------Salir.------------------------------|");
             option = scanner.nextInt();
             scanner.nextLine();
             switch (option) {
@@ -33,9 +44,12 @@ public class App {
                     selectPlanet();
                     break;
                 case 2:
-                    selectResources();
+                    selectNave();
                     break;
                 case 3:
+                    selectResources();
+                    break;
+                case 4:
                     System.out.println("Gracias por viajar con nosotros. Vueleve pronto ;D");
                     break;
 
@@ -48,7 +62,7 @@ public class App {
                 pressEnter();
             } */
 
-        } while (option != 3);
+        } while (option != 4);
 
         scanner.close();
     }
@@ -114,13 +128,25 @@ public class App {
                 break;
             } else if (option >= 1 && option <= 7) {
                 String planet = planets[option - 1];
-                double distance = distants[option - 1] * 1000000; // Convertir a km
+                double distance = distants[option - 1] * 1_000_000; // Convertir a km
+                String description = descripciones[option - 1]; // Obtener la descripción del planeta
+                mostrarInformacionPlaneta(planet, distance, description); // Mostrar información básica del planeta
                 calcularTiempo(planet, distance);
+                break;
             } else {
                 System.err.println("Opción inválida. Por favor, intente de nuevo.");
             }
         } while (true);
     }
+
+    private static void mostrarInformacionPlaneta(String planet, double distance, String description) {
+        System.out.println("===============================================");
+        System.out.println("Que bien! Vamos a ir a: " + planet + ".");
+        System.out.println("Distancia desde la Tierra a " + planet + ": " + distance / 1000000 + " millones de km.");
+        System.out.println("Te recuerdo que " + planet + ": " +description);
+        System.out.println("===============================================");
+    }
+
 
     private static void calcularTiempo(String planet, double distance) {
         System.out.println("Has seleccionado viajar a " + planet + ".");
@@ -137,15 +163,18 @@ public class App {
         int hours = (int) (time % 24); // Horas restantes
         //el (int) elimina la parte decimal, lo que significa que se obtiene solo la parte entera de un número.
 
-        System.out.println("###############################################");
+        System.out.println("===============================================");
         System.out.printf("Distancia desde la Tierra a %s: %.0f km.%n", planet, distance);
         System.out.println("Velocidad de la nave: " + velocity + " km/h.");
         System.out.println("Tiempo estimado de viaje: " + days + " días y " + hours + " horas.");
-        System.out.println("###############################################");
+        System.out.println("////////////////////////////////////////////////");
     }
 
 
     private static void selectResources() {
+    }
+
+    private static void selectNave() {
     }
 
    /*  private static void pressEnter() {
