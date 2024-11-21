@@ -15,7 +15,7 @@ public class App {
          * System.out.println("etc Y MAS DETALLES");
          * loadBarr();
          */
-        
+         
         int option;
         do {
             System.out.println("OPCIONES DISPONIBLES PARA EMPEZAR EL VIAJE");
