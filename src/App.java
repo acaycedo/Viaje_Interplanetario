@@ -3,16 +3,15 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    static double[] distants = { 123, 234, 123, 2132134, 123123, 213123, 12313, 2093939 };
-    static double[] velocidad = { 200000.0, 10000.1, 50000.2 };
+    static double[] distants = {78.0, 91.0, 41.0, 628.0, 1275.0, 2724.0, 4351.0};
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
 
         
          System.out.println(" ==================================================");
-         System.out.println("       BIENVENIDO A ESTE VIAJE INTERPLANETARIO");
-         System.out.println("  PREPARA TUS MALETAS Y VAMOS A ESTA GRAN AVENTURA");
+         System.out.println("       BIENVENIDO A ESTE VIAJE INTERPLANETARIO!");
+         System.out.println("  PREPARA TUS MALETAS Y VAMOS A ESTA GRAN AVENTURA!");
          System.out.println("  (recuerda tu punto inicial es el planeta Tierra)");
          System.out.println(" ==================================================");
          
@@ -24,10 +23,9 @@ public class App {
         do {
             System.out.println("|||   OPCIONES DISPONIBLES PARA EMPEZAR EL VIAJE  |||");
             System.out.println("||       Selecciona para el proceso del viaje!     ||");
-            System.out.println("|1.-------------Seleccionar Planeta.----------------|");
-            System.out.println("|2.-------------Selecciona la velocidad.------------|");
-            System.out.println("|3.-------------Seleccionar Recursos.---------------|");
-            System.out.println("|4.-------------Salir.------------------------------|");
+            System.out.println("|1.-------------Seleccionar Planeta y velocidad.----|");
+            System.out.println("|2.-------------Seleccionar Recursos.---------------|");
+            System.out.println("|3.-------------Salir.------------------------------|");
             option = scanner.nextInt();
             scanner.nextLine();
             switch (option) {
@@ -35,12 +33,9 @@ public class App {
                     selectPlanet();
                     break;
                 case 2:
-                selectVelocity();
-                    break;
-                case 3:
                     selectResources();
                     break;
-                case 4:
+                case 3:
                     System.out.println("Gracias por viajar con nosotros. Vueleve pronto ;D");
                     break;
 
@@ -53,7 +48,7 @@ public class App {
                 pressEnter();
             } */
 
-        } while (option != 4);
+        } while (option != 3);
 
         scanner.close();
     }
@@ -98,8 +93,9 @@ public class App {
     private static void selectPlanet() {
         int option;
         do {
-            var planets = List.of("Marte", "Mercurio", "Venus", "Júpiter", "Saturno", "Urano", "Neptuno");
+            String[] planets = {"Marte", "Mercurio", "Venus", "Júpiter", "Saturno", "Urano", "Neptuno"};
 
+            System.out.println("                ---------------------------------    ");
             System.out.println("                PLANETAS DISPONIBLES PARA VIAJAR     ");
             System.out.println("                ---------------------------------    ");
             System.out.println("|Estimado tripulante, seleccione uno de los siguientes planetas para viajar!|");
@@ -117,30 +113,37 @@ public class App {
                 System.out.println("Regresando al menú principal...");
                 break;
             } else if (option >= 1 && option <= 7) {
-                System.out.println("Has seleccionado viajar a " + planets.get(option - 1) + "!");
+                String planet = planets[option - 1];
+                double distance = distants[option - 1] * 1000000; // Convertir a km
+                calcularTiempo(planet, distance);
             } else {
                 System.err.println("Opción inválida. Por favor, intente de nuevo.");
             }
         } while (true);
     }
-    
-            /* // Asegurarse de que la opción esté en el rango correcto (1-7), de lo contrario, no hacer nada.
-            if (option >= 1 && option <= planets.size()) {
-                var planet = planets.get(option - 1);  // Ajustar para que el índice comience desde 0
-                System.out.println("Has seleccionado: " + planet);
-                selectPlanet=true;
-            } else if (option != 0) {
-                System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
-            }
-        } while (!selectPlanet);  // El bucle continuará hasta que el usuario seleccione la opción 0.
-    
-        sc.close();
-    } */
 
+    private static void calcularTiempo(String planet, double distance) {
+        System.out.println("Has seleccionado viajar a " + planet + ".");
+        System.out.print("Por favor, ingresa la velocidad de tu nave (en km/h): ");
+        double velocity = scanner.nextDouble();
 
-    private static void selectVelocity() {
+        if (velocity <= 0) {
+            System.err.println("La velocidad debe ser mayor que cero. Inténtalo de nuevo.");
+            return;
+        }
 
+        double time = distance / velocity; // Tiempo en horas
+        int days = (int) (time / 24); // Convertir a días 
+        int hours = (int) (time % 24); // Horas restantes
+        //el (int) elimina la parte decimal, lo que significa que se obtiene solo la parte entera de un número.
+
+        System.out.println("###############################################");
+        System.out.printf("Distancia desde la Tierra a %s: %.0f km.%n", planet, distance);
+        System.out.println("Velocidad de la nave: " + velocity + " km/h.");
+        System.out.println("Tiempo estimado de viaje: " + days + " días y " + hours + " horas.");
+        System.out.println("###############################################");
     }
+
 
     private static void selectResources() {
     }
