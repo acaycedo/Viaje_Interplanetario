@@ -13,7 +13,7 @@ public class App {
          System.out.println(" ==================================================");
          System.out.println("       BIENVENIDO A ESTE VIAJE INTERPLANETARIO");
          System.out.println("  PREPARA TUS MALETAS Y VAMOS A ESTA GRAN AVENTURA");
-         System.out.println("  (recuerda tu punto inicial es el planeta tierra)");
+         System.out.println("  (recuerda tu punto inicial es el planeta Tierra)");
          System.out.println(" ==================================================");
          
          /*
@@ -35,9 +35,10 @@ public class App {
                     selectPlanet();
                     break;
                 case 2:
+                selectVelocity();
                     break;
                 case 3:
-                    selectNave();
+                    selectResources();
                     break;
                 case 4:
                     System.out.println("Gracias por viajar con nosotros. Vueleve pronto ;D");
@@ -95,15 +96,13 @@ public class App {
     } */
 
     private static void selectPlanet() {
-        var sc = new Scanner(System.in);
         int option;
-        var selectPlanet = false;  // Declarar option fuera del do-while para usarla en la condición del bucle.
         do {
-            var planets = List.of("Marte","Mercurio","Venus","Júpiter","Saturno","Urano","Neptuno");
-    
-            System.out.println("PLANETAS DISPONIBLES PARA VIAJAR");
-            System.out.println("---------------------------------");
-            System.out.println("Estimado tripulante selecciones uno de los siguientes planetas para viajar: ");
+            var planets = List.of("Marte", "Mercurio", "Venus", "Júpiter", "Saturno", "Urano", "Neptuno");
+
+            System.out.println("                PLANETAS DISPONIBLES PARA VIAJAR     ");
+            System.out.println("                ---------------------------------    ");
+            System.out.println("|Estimado tripulante, seleccione uno de los siguientes planetas para viajar!|");
             System.out.println("1. Marte");
             System.out.println("2. Mercurio");
             System.out.println("3. Venus");
@@ -111,11 +110,21 @@ public class App {
             System.out.println("5. Saturno");
             System.out.println("6. Urano");
             System.out.println("7. Neptuno");
-            System.out.println("0. Volver menu principal");
+            System.out.println("0. Volver al menú principal");
+            option = scanner.nextInt();
+
+            if (option == 0) {
+                System.out.println("Regresando al menú principal...");
+                break;
+            } else if (option >= 1 && option <= 7) {
+                System.out.println("Has seleccionado viajar a " + planets.get(option - 1) + "!");
+            } else {
+                System.err.println("Opción inválida. Por favor, intente de nuevo.");
+            }
+        } while (true);
+    }
     
-            option = sc.nextInt();  // Leer la opción del usuario
-    
-            // Asegurarse de que la opción esté en el rango correcto (1-7), de lo contrario, no hacer nada.
+            /* // Asegurarse de que la opción esté en el rango correcto (1-7), de lo contrario, no hacer nada.
             if (option >= 1 && option <= planets.size()) {
                 var planet = planets.get(option - 1);  // Ajustar para que el índice comience desde 0
                 System.out.println("Has seleccionado: " + planet);
@@ -125,15 +134,20 @@ public class App {
             }
         } while (!selectPlanet);  // El bucle continuará hasta que el usuario seleccione la opción 0.
     
-        sc.close();  // Cerrar el scanner al finalizar.
+        sc.close();
+    } */
+
+
+    private static void selectVelocity() {
+
     }
-    
-    private static void pressEnter() {
+
+    private static void selectResources() {
+    }
+
+   /*  private static void pressEnter() {
         System.out.println("Presione ENTER para continuar");
         scanner.nextLine();
     }
-
-    private static void selectNave() {
-    }
-
+ */
 }
