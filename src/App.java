@@ -9,23 +9,25 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        /*
-         * System.out.println("INSERTAR LOGO NAVE");
-         * System.out.println("INSERTAR BIENVENIDA");
-         * System.out.println("etc Y MAS DETALLES");
+        
+         System.out.println("=================================================");
+         System.out.println("     BIENVENIDO A ESTE VIAJE INTERPLANETARIO");
+         System.out.println("PREPARA TUS MALETAS Y VAMOS A ESTA GRAN AVENTURA");
+         System.out.println("=================================================");
+         
+         /*
          * loadBarr();
          */
-        
+         
         int option;
         do {
-            System.out.println("OPCIONES DISPONIBLES PARA EMPEZAR EL VIAJE");
-            System.out.println("---------------------------------");
-            System.out.println("Seleccione alguna de las opciones para cargar el viaje: ");
-            System.out.println("1. Seleccionar Planeta.");
-            System.out.println("2. Seleccionar velocidad");
-            System.out.println("3. Seleccionar Recursos");
-            System.out.println("4. Seleccionar tipo de nave");
-            System.out.println("0. Salir");
+            System.out.println("|||   OPCIONES DISPONIBLES PARA EMPEZAR EL VIAJE  |||");
+            System.out.println("||       Selecciona para el proceso del viaje!     ||");
+            System.out.println("|1.-------------Seleccionar Planeta.----------------|");
+            System.out.println("|2.-------------Seleccionar velocidad.--------------|");
+            System.out.println("|3.-------------Seleccionar Recursos.---------------|");
+            System.out.println("|4.-------------Seleccionar tipo de nave.-----------|");
+            System.out.println("|5.-------------Salir.------------------------------|");
             option = scanner.nextInt();
             scanner.nextLine();
             switch (option) {
@@ -34,25 +36,31 @@ public class App {
                     break;
                 case 2:
                     break;
-                case 4:
+                case 3:
                     selectNave();
                     break;
-                case 0:
-                    System.out.println("Viaje cancelado");
+                case 4:
+                    
                     break;
+                case 5:
+                    System.out.println("Gracias por viajar con nosotros. Vueleve pronto ;D");
+                    break;
+
                 default:
                     System.err.println("Ingrese una opcion valida.");
                     break;
             }
-            if (option != 0) {
+
+            /* if (option != 0) {
                 pressEnter();
-            }
-        } while (option != 0);
+            } */
+
+        } while (option != 5);
 
         scanner.close();
     }
 
-    private static void loadBarr() throws InterruptedException {
+    /* private static void loadBarr() throws InterruptedException {
         int total = 100; // Total de "pasos" o caracteres para completar la barra de carga
         int progreso = 0; // El progreso actual
         int longitudBarra = 20; // Longitud total de la barra de carga
@@ -87,7 +95,7 @@ public class App {
 
         // Después de completar la carga
         System.out.println("\nTodos los sistemas en linea!\n");
-    }
+    } */
 
     private static void selectPlanet() {
         var sc = new Scanner(System.in);
@@ -106,7 +114,7 @@ public class App {
             System.out.println("5. Saturno");
             System.out.println("6. Urano");
             System.out.println("7. Neptuno");
-            System.out.println("0. Para salir");
+            System.out.println("0. Volver menu principal");
     
             option = sc.nextInt();  // Leer la opción del usuario
     
