@@ -13,10 +13,14 @@ public class App {
             "Urano es un gigante helado que se distingue por su color azul verdoso.",
             "Neptuno es el planeta más alejado del Sol."
     };
+    //Se establecio una variable global tipo entero para poder usarla en cualquier funcion y no repetir
     static Integer option;
+    //Se establecio una variable global tipo Scanner para poder usarla en cualquier funcion y no repetir
     static Scanner scanner = new Scanner(System.in);
-    static double velocitySelected = 0.0;
-    static String plenetS = " ";
+
+    
+    static double velocitySelected = 0.0; //Se establece variable global para encerrar el resultado otorgado por un usuario al escoger la velocidad
+    static String plenetS = " "; //Se establece variable global para encerrar el resultado otorgado por un usuario al escoger un planeta
 
     public static void main(String[] args) throws Exception {
 
@@ -122,18 +126,20 @@ public class App {
             System.out.println("                PLANETAS DISPONIBLES PARA VIAJAR     ");
             System.out.println("                ---------------------------------    ");
             System.out.println("|Estimado tripulante, seleccione uno de los siguientes planetas para viajar!|");
-            printAllPlanets();
+            printAllPlanets(); // Se trae el metodo usado para traer cada uno de los planetas disponibles en el array
             System.out.println("0. Volver al menú principal");
             option = scanner.nextInt();
 
+            
             if (option == 0) {
                 System.out.println("Regresando al menú principal...");
                 break;
             } else if (option >= 1 && option <= planets.length) {  
                 String planet = planets[option - 1];
                 System.out.println("Planeta escogido :"+planet);
-                planetS = planet;
-                start = false;
+                // se corrige y se quita el Break, ya que lo que quiero es parar el ciclo y poder retornar el valor otorgado
+                planetS = planet; // planetS toma el valor escogido y lo retorna
+                start = false; // finaliza el ciclo
             } else {
                 System.err.println("Opción inválida. Por favor, intente de nuevo.");
             }
@@ -142,8 +148,9 @@ public class App {
         return planetS;
     }
 
-    private static double  selectVelocity(){
-        Double velocity = 0.0;
+    // Metodo para seleccionar la velocidad por parte del usuario
+    private static double selectVelocity(){
+        double velocity = 0.0;
         String planet = planets[option - 1];
         double distance = distants[option - 1] * 1_000_000; // Convertir a km
         String description = descripciones[option - 1]; // Obtener la descripción del planeta
@@ -151,7 +158,7 @@ public class App {
                                                        // usuario
         calculateTime(planet, distance);
         
-        return velocity;
+        return velocity; //Retorna el valor de obtenido por los calculos
     }
 
     private static void printPlanet(int option) {
@@ -202,8 +209,11 @@ public class App {
     }
 
     private static double selectResources(double distance) {
+        // Se crea un metodo para seleccionar recursos
+        // ES DE PRUEBA MIENTRAS SE TRABAJA
         double calculateFuel;
         double resourSelect;
+
         System.out.println("CALCULO DE RECURSOS");
         System.out.println("Datos del Usuario: ");
         System.out.println("Haciendo Calculos.... espere un momento");
@@ -212,7 +222,10 @@ public class App {
         calculateFuel = (distance / 100) * 8;
         System.out.println("Por lo tanto el viaje consume: " + calculateFuel);
         resourSelect = calculateFuel;
-        return resourSelect;
+
+
+        return resourSelect; //retorna el valor obtenido luego de calcular lo que consumira en conbustible a una determinada distancia por litro
+        // no esta completada solo es idea la formula esta mal xd
 
     }
 
