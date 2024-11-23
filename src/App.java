@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class App {
     static String[] planets = { "Marte", "Mercurio", "Venus", "Júpiter", "Saturno", "Urano", "Neptuno" };
-    static double[] distants = { 78.0, 91.0, 41.0, 628.0, 1275.0, 2724.0, 4351.0 };
+    static double[] distances = { 78.0, 91.0, 41.0, 628.0, 1275.0, 2724.0, 4351.0 };
     static String[] descripciones = {
             "Marte es conocido como el planeta rojo debido a su color característico.",
             "Mercurio es el planeta más cercano al Sol.",
@@ -17,10 +17,10 @@ public class App {
     static Integer option;
     //Se establecio una variable global tipo Scanner para poder usarla en cualquier funcion y no repetir
     static Scanner scanner = new Scanner(System.in);
-
-    
+    //consumo de la nave por cada 100 km
     static double velocitySelected = 0.0; //Se establece variable global para encerrar el resultado otorgado por un usuario al escoger la velocidad
-    static String plenetS = " "; //Se establece variable global para encerrar el resultado otorgado por un usuario al escoger un planeta
+    static String planetS = ""; //Se establece variable global para encerrar el resultado otorgado por un usuario al escoger un planeta
+    static double distance = 0.0;
 
     public static void main(String[] args) throws Exception {
 
@@ -46,10 +46,15 @@ public class App {
             scanner.nextLine();
             switch (option) {
                 case 1:
-                    plenetS = selectPlanet(option);
+                    planetS = selectPlanet(option);
+                    
                     break;
                 case 2:
-                    velocitySelected = selectVelocity();
+                    if (planetS=="") {
+                        System.out.println("¡Por favor, selecciona primero un planeta!\n");
+                    } else {
+                        velocitySelected = selectVelocity(); // Utilizamos planetS para mostrar información de velocidad
+                    }
                     break;
                 case 3:
                     selectNave();
@@ -119,12 +124,12 @@ public class App {
 
     private static String selectPlanet(int option) {
         String planetS = "";
-        var start = true;
+        boolean start = true;
         do {
             
-            System.out.println("                ---------------------------------    ");
+            System.out.println("               ----------------------------------    ");
             System.out.println("                PLANETAS DISPONIBLES PARA VIAJAR     ");
-            System.out.println("                ---------------------------------    ");
+            System.out.println("               ----------------------------------    ");
             System.out.println("|Estimado tripulante, seleccione uno de los siguientes planetas para viajar!|");
             printAllPlanets(); // Se trae el metodo usado para traer cada uno de los planetas disponibles en el array
             System.out.println("0. Volver al menú principal");
@@ -136,34 +141,37 @@ public class App {
                 break;
             } else if (option >= 1 && option <= planets.length) {  
                 String planet = planets[option - 1];
-                System.out.println("Planeta escogido :"+planet);
+                
+                System.out.println("Planeta escogido :" + planet);
                 // se corrige y se quita el Break, ya que lo que quiero es parar el ciclo y poder retornar el valor otorgado
-                planetS = planet; // planetS toma el valor escogido y lo retorna
+                planetS = planet;
+                distance = distances[option - 1] * 1_000_000;
+                System.out.println(distance);
+                 // planetS toma el valor escogido y lo retorna
                 start = false; // finaliza el ciclo
             } else {
                 System.err.println("Opción inválida. Por favor, intente de nuevo.");
             }
             
         } while (start);
-        return planetS;
+        return planetS; //retorna el planeta seleccionado
     }
 
     // Metodo para seleccionar la velocidad por parte del usuario
     private static double selectVelocity(){
-        double velocity = 0.0;
-        String planet = planets[option - 1];
-        double distance = distants[option - 1] * 1_000_000; // Convertir a km
+        String planet = planetS;
         String description = descripciones[option - 1]; // Obtener la descripción del planeta
         showInfoPlanet(planet, distance, description); // Envia la información seleccionada por el
                                                        // usuario
         calculateTime(planet, distance);
-        
-        return velocity; //Retorna el valor de obtenido por los calculos
+        //Retorna el valor de obtenido por los calculos
+        System.out.println(distance);
+        return velocitySelected;
     }
 
     private static void printPlanet(int option) {
         // Metodo solo para imprimir un planeta segun la opcion
-        System.out.println(planets[option]);
+        System.out.println(planets[option]+" que esta a una distancia de: " + distances[option]+ " millones de km.");
 
     }
 
@@ -180,20 +188,14 @@ public class App {
     private static void showInfoPlanet(String planet, double distance, String description) {
         System.out.println("===============================================");
         System.out.println("Que bien! Vamos a ir a: " + planet + ".");
-        System.out.println("Distancia desde la Tierra a " + planet + ": " + distance / 1000000 + " millones de km.");
+        System.out.println("Distancia desde la Tierra a " + planet + ": " + distance + " millones de km.");
         System.out.println("Te recuerdo que " + planet + ": " + description);
         System.out.println("===============================================");
     }
 
-    private static void calculateTime(String planet, double distance) {
-        System.out.println("Has seleccionado viajar a " + planet + ".");
+    private static double calculateTime(String planet, double distance) {
         System.out.print("Por favor, ingresa la velocidad de tu nave (en km/h): ");
         double velocity = scanner.nextDouble();
-
-        if (velocity <= 0) {
-            System.err.println("La velocidad debe ser mayor que cero. Inténtalo de nuevo.");
-            return;
-        }
 
         double time = distance / velocity; // Tiempo en horas
         int days = (int) (time / 24); // Convertir a días
@@ -206,21 +208,28 @@ public class App {
         System.out.println("Velocidad de la nave: " + velocity + " km/h.");
         System.out.println("Tiempo estimado de viaje: " + days + " días y " + hours + " horas.");
         System.out.println("////////////////////////////////////////////////");
+
+        velocitySelected = velocity;
+        return velocitySelected;
     }
 
-    private static double selectResources(double distance) {
+    private static double selectResources(double velocitySelected) {
         // Se crea un metodo para seleccionar recursos
         // ES DE PRUEBA MIENTRAS SE TRABAJA
         double calculateFuel;
         double resourSelect;
-
+        double spent = 8.8;
+        System.out.println(velocitySelected);
         System.out.println("CALCULO DE RECURSOS");
         System.out.println("Datos del Usuario: ");
         System.out.println("Haciendo Calculos.... espere un momento");
 
-        System.out.println("Por ahora la nave Coomotor consume 8 Litros por cada 100 Km");
-        calculateFuel = (distance / 100) * 8;
-        System.out.println("Por lo tanto el viaje consume: " + calculateFuel);
+        spent = 1 + 0.05 * (velocitySelected - 100)/10;
+        distance = distance * 1_000_000;
+        calculateFuel = (distance / 100) * spent * velocitySelected;
+        System.out.println("El consumo de combustible para recorrer " + distance + " km a " 
+                           + velocitySelected + " km/h es: " + calculateFuel + " litros.");
+        
         resourSelect = calculateFuel;
 
 
