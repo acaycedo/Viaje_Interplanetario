@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 public class App {
@@ -30,9 +29,8 @@ public class App {
         System.out.println("  (recuerda tu punto inicial es el planeta Tierra)");
         System.out.println(" ==================================================");
 
-        /*
-         * loadBarr();
-         */
+         loadBarr();
+  
 
         do {
             System.out.println("|||   OPCIONES DISPONIBLES PARA EMPEZAR EL VIAJE  |||");
@@ -82,45 +80,45 @@ public class App {
         scanner.close();
     }
 
-    /*
-     * private static void loadBarr() throws InterruptedException {
-     * int total = 100; // Total de "pasos" o caracteres para completar la barra de
-     * carga
-     * int progreso = 0; // El progreso actual
-     * int longitudBarra = 20; // Longitud total de la barra de carga
-     * 
-     * // Simulacion o recorrido de un for para simular la carga y dado la longitud
-     * // calculara el numero de caracteres faltantes
-     * for (int i = 0; i < total; i++) {
-     * // Calculamos la cantidad de "#" para llenar la barra de carga
-     * 
-     * progreso = (i * longitudBarra) / total;
-     * 
-     * // Construimos el inicio de la barra de carga
-     * String barra = "[";
-     * 
-     * for (int j = 0; j < longitudBarra; j++) {
-     * if (j < progreso) {
-     * barra += "#"; // Parte llena de la barra
-     * } else {
-     * barra += " "; // Parte vacía de la barra
-     * }
-     * }
-     * barra += "]";
-     * 
-     * // Imprimimos la barra de carga y el porcentaje
-     * System.out.print("\r" + barra + " " + i + "%");
-     * 
-     * // Pausa para simular el tiempo de carga
-     * 
-     * Thread.sleep(55); // 100 ms de pausa entre cada actualización
-     * 
-     * }
-     * 
-     * // Después de completar la carga
-     * System.out.println("\nTodos los sistemas en linea!\n");
-     * }
-     */
+
+     private static void loadBarr() throws InterruptedException {
+     int total = 100; // Total de "pasos" o caracteres para completar la barra de
+     
+     int progreso = 0; // El progreso actual
+     int longitudBarra = 20; // Longitud total de la barra de carga
+     
+     // Simulacion o recorrido de un for para simular la carga y dado la longitud
+     // calculara el numero de caracteres faltantes
+     for (int i = 0; i < total; i++) {
+     // Calculamos la cantidad de "#" para llenar la barra de carga
+     
+     progreso = (i * longitudBarra) / total;
+     
+     // Construimos el inicio de la barra de carga
+     String barra = "[";
+     
+     for (int j = 0; j < longitudBarra; j++) {
+     if (j < progreso) {
+     barra += "#"; // Parte llena de la barra
+     } else {
+ barra += " "; // Parte vacía de la barra
+     }
+     }
+     barra += "]";
+     
+     // Imprimimos la barra de carga y el porcentaje
+     System.out.print("\r" + barra + " " + i + "%");
+     
+     // Pausa para simular el tiempo de carga
+     
+     Thread.sleep(55); // 100 ms de pausa entre cada actualización
+     
+     }
+     
+     // Después de completar la carga
+     System.out.println("\nTodos los sistemas en linea!\n");
+     }
+     
 
     private static String selectPlanet(int option) {
         String planetS = "";
@@ -214,28 +212,32 @@ public class App {
     }
 
     private static double selectResources(double velocitySelected) {
-        // Se crea un metodo para seleccionar recursos
-        // ES DE PRUEBA MIENTRAS SE TRABAJA
-        double calculateFuel;
-        double resourSelect;
-        double spent = 8.8;
-        System.out.println(velocitySelected);
-        System.out.println("CALCULO DE RECURSOS");
-        System.out.println("Datos del Usuario: ");
-        System.out.println("Haciendo Calculos.... espere un momento");
-
-        spent = 1 + 0.05 * (velocitySelected - 100)/10;
-        distance = distance * 1_000_000;
-        calculateFuel = (distance / 100) * spent * velocitySelected;
-        System.out.println("El consumo de combustible para recorrer " + distance + " km a " 
-                           + velocitySelected + " km/h es: " + calculateFuel + " litros.");
+        double baseFuelConsumption = 8.8; // L/100km
+        double speedPenalty = 1.0;
         
-        resourSelect = calculateFuel;
+        // Apply speed penalty for speeds over 100km/h
+        // Each 10km/h over 100km/h increases consumption by 5%
+        if (velocitySelected > 100) {
+            double overSpeed = velocitySelected - 100;
+            speedPenalty = 1.0 + (0.05 * (overSpeed / 10.0));
+        }
 
+        // Calculate actual consumption considering speed penalty
+        double adjustedConsumption = baseFuelConsumption * speedPenalty;
+        
+        // Calculate total fuel needed for the entire distance
+        // Formula: (distance / 100) * consumption per 100km
+        double totalFuelNeeded = (distance / 100.0) * adjustedConsumption;
 
-        return resourSelect; //retorna el valor obtenido luego de calcular lo que consumira en conbustible a una determinada distancia por litro
-        // no esta completada solo es idea la formula esta mal xd
+        System.out.println("\nCÁLCULO DE RECURSOS");
+        System.out.println("Datos del Usuario:");
+        System.out.println("Velocidad seleccionada: " + velocitySelected + " km/h");
+        System.out.println("Distancia a recorrer: " + distance + " km");
+        System.out.println("Consumo base: " + baseFuelConsumption + " L/100km");
+        System.out.println("Factor por velocidad: " + String.format("%.2f", speedPenalty));
+        System.out.println("Consumo total de combustible: " + String.format("%.2f", totalFuelNeeded) + " litros");
 
+        return totalFuelNeeded;
     }
 
     private static void selectNave() {
