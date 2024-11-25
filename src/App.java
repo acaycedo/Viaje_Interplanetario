@@ -13,6 +13,7 @@ public class App {
             "Neptuno es el planeta más alejado del Sol."
     };
     static String[] naves = { "Nova Tempest", "Solar Phantom", "Infinity Hawk", "Astral Pathfinder" };
+    static String[] mensajeDesvio = {"Ou! Creo que tendremos que tomar un desvio, ya que se pueden presentar fallas si seguimos por este camino"};
     //Se establecio una variable global tipo entero para poder usarla en cualquier funcion y no repetir
     static Integer option;
     //Se establecio una variable global tipo Scanner para poder usarla en cualquier funcion y no repetir
@@ -21,6 +22,7 @@ public class App {
     static double velocitySelected = 0.0; //Se establece variable global para encerrar el resultado otorgado por un usuario al escoger la velocidad
     static String planetS = ""; //Se establece variable global para encerrar el resultado otorgado por un usuario al escoger un planeta
     static double distance = 0.0;
+    static String selectedNave = ""; // Variable para almacenar la nave seleccionada
 
     public static void main(String[] args) throws Exception {
 
@@ -40,7 +42,8 @@ public class App {
             System.out.println("|2.-------------Seleccionar Velocidad.--------------|");
             System.out.println("|3.-------------Seleccionar una nave espacial.------|");
             System.out.println("|4.-------------Seleccionar Recursos.---------------|");
-            System.out.println("|5.-------------Salir.------------------------------|");
+            System.out.println("|5.-------------INICIAR VIAJE!.---------------------|");
+            System.out.println("|6.-------------Salir.------------------------------|");
             option = scanner.nextInt();
             scanner.nextLine();
             switch (option) {
@@ -62,6 +65,9 @@ public class App {
                     selectResources(velocitySelected);
                     break;
                 case 5:
+                    iniciar();
+                    break;
+                case 6:
                     System.out.println("Gracias por viajar con nosotros. Vueleve pronto ;D");
                     break;
 
@@ -212,32 +218,42 @@ public class App {
         return velocitySelected;
     }
 
-    private static double selectResources(double velocitySelected) {
+    private static double calculateResources(double velocitySelected) {
         double baseFuelConsumption = 8.8; // L/100km
         double speedPenalty = 1.0;
-        
-        // Apply speed penalty for speeds over 100km/h
-        // Each 10km/h over 100km/h increases consumption by 5%
+    
+        // Aplica penalización por velocidad superior a 100 km/h
         if (velocitySelected > 100) {
             double overSpeed = velocitySelected - 100;
             speedPenalty = 1.0 + (0.05 * (overSpeed / 10.0));
         }
-
-        // Calculate actual consumption considering speed penalty
+    
+        // Calcula el consumo ajustado considerando la penalización
         double adjustedConsumption = baseFuelConsumption * speedPenalty;
-        
-        // Calculate total fuel needed for the entire distance
-        // Formula: (distance / 100) * consumption per 100km
-        double totalFuelNeeded = (distance / 100.0) * adjustedConsumption;
-
+    
+        // Calcula el combustible total necesario para la distancia
+        return (distance / 100.0) * adjustedConsumption;
+    }
+    
+    // Método interactivo (para cuando se selecciona la opción 4 del menú)
+    private static double selectResources(double velocitySelected) {
+        double totalFuelNeeded = calculateResources(velocitySelected);
+    
         System.out.println("\nCÁLCULO DE RECURSOS");
-        System.out.println("Datos del Usuario!");
-        System.out.println("Velocidad seleccionada: " + velocitySelected + " km/h");
-        System.out.println("Distancia a recorrer: " + distance + " km");
-        System.out.println("Consumo base: " + baseFuelConsumption + " L/100km");
-        System.out.println("Factor por velocidad: " + String.format("%.2f", speedPenalty));
+        System.out.println("Consumo base: 8.8 L/100km");
+        System.out.println("Factor por velocidad: " + String.format("%.2f", totalFuelNeeded / (distance / 100.0)));
         System.out.println("Consumo total de combustible: " + String.format("%.2f", totalFuelNeeded) + " litros");
-
+    
+        // Mensaje para que el usuario regrese al menú principal
+        int volverMenu;
+        do {
+            System.out.print("\nIngresa '1' para volver al menú principal: ");
+            volverMenu = scanner.nextInt();
+            if (volverMenu != 1) {
+                System.out.println("Opción no válida. Inténtalo de nuevo.");
+            }
+        } while (volverMenu != 1);
+    
         return totalFuelNeeded;
     }
 
@@ -250,17 +266,45 @@ public class App {
             for (int i = 0; i < naves.length; i++) {
                 System.out.println((i + 1) + ". " + naves[i]);
             }
-    
+        
             System.out.print("Ingresa el número de la nave que deseas elegir: ");
             int opcion = scanner.nextInt();
-    
+        
             // Validar la selección
             if (opcion >= 1 && opcion <= naves.length) {
-                System.out.println("Has seleccionado la nave: " + naves[opcion - 1]);
+                selectedNave = naves[opcion - 1];
+                System.out.println("Has seleccionado la nave: " + selectedNave);
             } else {
                 System.out.println("Selección inválida. Inténtalo de nuevo.");
             }
-    }
+        }
+
+
+
+        private static void iniciar() {
+            System.out.println("=====================================================");
+            System.out.println("               PREPARÁNDONOS PARA EL VIAJE           ");
+            System.out.println("=====================================================");
+        
+            System.out.println("Planeta seleccionado: " + planetS);
+            System.out.println("Distancia estimada desde la Tierra: " + distance + " km");
+            System.out.println("Velocidad seleccionada: " + velocitySelected + " km/h");
+            System.out.println("Nave seleccionada: " + selectedNave);
+            
+            // Calcula y muestra el consumo estimado de combustible
+            double estimatedFuel = calculateResources(velocitySelected);
+            System.out.println("Consumo estimado de combustible: " + String.format("%.2f", estimatedFuel) + " litros");
+        
+            // Mensaje final de inicio
+            System.out.println("=====================================================");
+            System.out.println("TODO LISTO: TU GRAN VIAJE HACIA " + planetS + " COMIENZA AHORA.");
+            System.out.println("-----------------------------------------------------");
+        
+            // Mensaje de desvío
+            System.out.println(mensajeDesvio[0]);
+            System.out.println("=====================================================");
+        }
+}
 
     /*
      * private static void pressEnter() {
@@ -268,4 +312,4 @@ public class App {
      * scanner.nextLine();
      * }
      */
-}
+
