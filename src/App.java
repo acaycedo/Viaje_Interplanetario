@@ -12,6 +12,7 @@ public class App {
             "Urano es un gigante helado que se distingue por su color azul verdoso.",
             "Neptuno es el planeta más alejado del Sol."
     };
+    static String[] naves = { "Nova Tempest", "Solar Phantom", "Infinity Hawk", "Astral Pathfinder" };
     //Se establecio una variable global tipo entero para poder usarla en cualquier funcion y no repetir
     static Integer option;
     //Se establecio una variable global tipo Scanner para poder usarla en cualquier funcion y no repetir
@@ -101,7 +102,7 @@ public class App {
      if (j < progreso) {
      barra += "#"; // Parte llena de la barra
      } else {
- barra += " "; // Parte vacía de la barra
+     barra += " "; // Parte vacía de la barra
      }
      }
      barra += "]";
@@ -230,7 +231,7 @@ public class App {
         double totalFuelNeeded = (distance / 100.0) * adjustedConsumption;
 
         System.out.println("\nCÁLCULO DE RECURSOS");
-        System.out.println("Datos del Usuario:");
+        System.out.println("Datos del Usuario!");
         System.out.println("Velocidad seleccionada: " + velocitySelected + " km/h");
         System.out.println("Distancia a recorrer: " + distance + " km");
         System.out.println("Consumo base: " + baseFuelConsumption + " L/100km");
@@ -241,6 +242,24 @@ public class App {
     }
 
     private static void selectNave() {
+            System.out.println("               ----------------------------------    ");
+            System.out.println("                         NAVES DISPONIBLES!          ");
+            System.out.println("               ----------------------------------    ");
+            System.out.println("|Estimado tripulante Por favor, selecciona una nave para viajar!|");
+
+            for (int i = 0; i < naves.length; i++) {
+                System.out.println((i + 1) + ". " + naves[i]);
+            }
+    
+            System.out.print("Ingresa el número de la nave que deseas elegir: ");
+            int opcion = scanner.nextInt();
+    
+            // Validar la selección
+            if (opcion >= 1 && opcion <= naves.length) {
+                System.out.println("Has seleccionado la nave: " + naves[opcion - 1]);
+            } else {
+                System.out.println("Selección inválida. Inténtalo de nuevo.");
+            }
     }
 
     /*
