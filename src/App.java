@@ -101,7 +101,7 @@ public class App {
      if (j < progreso) {
      barra += "#"; // Parte llena de la barra
      } else {
- barra += " "; // Parte vacía de la barra
+     barra += " "; // Parte vacía de la barra
      }
      }
      barra += "]";
