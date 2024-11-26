@@ -23,6 +23,7 @@ public class App {
     static String planetS = ""; //Se establece variable global para encerrar el resultado otorgado por un usuario al escoger un planeta
     static double distance = 0.0;
     static String selectedNave = ""; // Variable para almacenar la nave seleccionada
+    static double hoursSelected = 0.0;
 
     public static void main(String[] args) throws Exception {
 
@@ -55,20 +56,23 @@ public class App {
                     if (planetS=="") {
                         System.out.println("¡Por favor, selecciona primero un planeta!\n");
                     } else {
-                        velocitySelected = selectVelocity(); // Utilizamos planetS para mostrar información de velocidad
+                        selectVelocity(); // Utilizamos planetS para mostrar información de velocidad
                     }
                     break;
                 case 3:
                     selectNave();
                     break;
                 case 4:
-                    selectResources(velocitySelected);
+                    calculateResources(velocitySelected);
                     break;
                 case 5:
-                    iniciar();
+                    showTravelProgress(hoursSelected, distance);
                     break;
                 case 6:
                     System.out.println("Gracias por viajar con nosotros. Vueleve pronto ;D");
+                    break;
+                case 0:
+                    System.out.println("Cancelar Vuelo.");
                     break;
 
                 default:
@@ -82,7 +86,7 @@ public class App {
              * }
              */
 
-        } while (option != 4);
+        } while (option != 0);
 
         scanner.close();
     }
@@ -147,11 +151,10 @@ public class App {
             } else if (option >= 1 && option <= planets.length) {  
                 String planet = planets[option - 1];
                 
-                System.out.println("Planeta escogido :" + planet);
+                System.out.println("Planeta escogido :" + planet +"\n");
                 // se corrige y se quita el Break, ya que lo que quiero es parar el ciclo y poder retornar el valor otorgado
                 planetS = planet;
                 distance = distances[option - 1] * 1_000_000;
-                System.out.println(distance);
                  // planetS toma el valor escogido y lo retorna
                 start = false; // finaliza el ciclo
             } else {
@@ -160,18 +163,6 @@ public class App {
             
         } while (start);
         return planetS; //retorna el planeta seleccionado
-    }
-
-    // Metodo para seleccionar la velocidad por parte del usuario
-    private static double selectVelocity(){
-        String planet = planetS;
-        String description = descripciones[option - 1]; // Obtener la descripción del planeta
-        showInfoPlanet(planet, distance, description); // Envia la información seleccionada por el
-                                                       // usuario
-        calculateTime(planet, distance);
-        //Retorna el valor de obtenido por los calculos
-        System.out.println(distance);
-        return velocitySelected;
     }
 
     private static void printPlanet(int option) {
@@ -197,12 +188,27 @@ public class App {
         System.out.println("Te recuerdo que " + planet + ": " + description);
         System.out.println("===============================================");
     }
+    // Metodo para seleccionar la velocidad por parte del usuario
+    private static void selectVelocity(){
+        String planet = planetS;
+        String description = descripciones[option - 1]; // Obtener la descripción del planeta
+        showInfoPlanet(planet, distance, description); // Envia la información seleccionada por el
+        calculateVelocity(planet, distance) ; // Calcula la velocidad seleccionada por el                                             // usuario
+        calculateTime(planet, distance);
+        //Retorna el valor de obtenido por los calculos
+    }
 
-    private static double calculateTime(String planet, double distance) {
+    private static double calculateVelocity(String planet, double distance) {
         System.out.print("Por favor, ingresa la velocidad de tu nave (en km/h): ");
         double velocity = scanner.nextDouble();
 
-        double time = distance / velocity; // Tiempo en horas
+        velocitySelected = velocity;
+        return velocitySelected;
+    }
+
+
+    private static double calculateTime(String planet, double distance) {
+        double time = distance / velocitySelected; // Tiempo en horas
         int days = (int) (time / 24); // Convertir a días
         int hours = (int) (time % 24); // Horas restantes
         // el (int) elimina la parte decimal, lo que significa que se obtiene solo la
@@ -210,51 +216,80 @@ public class App {
 
         System.out.println("===============================================");
         System.out.printf("Distancia desde la Tierra a %s: %.0f km.%n", planet, distance);
-        System.out.println("Velocidad de la nave: " + velocity + " km/h.");
-        System.out.println("Tiempo estimado de viaje: " + days + " días y " + hours + " horas.");
+        System.out.println("Velocidad de la nave: " + velocitySelected + " km/h.");
+        System.out.printf("Tiempo estimado de viaje: %d días y %d horas.%n", days, hours);
         System.out.println("////////////////////////////////////////////////");
-
-        velocitySelected = velocity;
-        return velocitySelected;
+        hoursSelected = time;
+        return hoursSelected;
     }
-
-    private static double calculateResources(double velocitySelected) {
-        double baseFuelConsumption = 8.8; // L/100km
-        double speedPenalty = 1.0;
-    
-        // Aplica penalización por velocidad superior a 100 km/h
-        if (velocitySelected > 100) {
-            double overSpeed = velocitySelected - 100;
-            speedPenalty = 1.0 + (0.05 * (overSpeed / 10.0));
-        }
-    
-        // Calcula el consumo ajustado considerando la penalización
-        double adjustedConsumption = baseFuelConsumption * speedPenalty;
-    
-        // Calcula el combustible total necesario para la distancia
-        return (distance / 100.0) * adjustedConsumption;
-    }
+       
     
     // Método interactivo (para cuando se selecciona la opción 4 del menú)
-    private static double selectResources(double velocitySelected) {
-        double totalFuelNeeded = calculateResources(velocitySelected);
-    
+    private static double calculateResources(double velocitySelected) {
+        // Constantes de consumo
+        double baseFuelConsumption = 8.8; // L/100km
+        // Cálculo del consumo de oxígeno:
+        // - 14 respiraciones/minuto (promedio)
+        // - 60 minutos/hora = 840 respiraciones/hora
+        // - 0.5 litros de aire por respiración
+        // - 21% de oxígeno en el aire
+        // 840 * 0.5 * 0.21 = 88.2 litros de oxígeno por hora
+        double oxygenPerHour = 88.2; // Litros de oxígeno por hora
+        double speedPenalty = 1.0;
+        
+        // Calcular tiempo de viaje
+        
+        // Calcular consumo de oxígeno total
+        double totalOxygenNeeded = hoursSelected * oxygenPerHour;
+        
+        // Cálculo de combustible con penalización por velocidad
+        // Esto es parte de un evento ya que cuando el usuario escoge la velocidad
+        // gana una penalizacion de combustible por lo tanto consume mas combustible
+        if (velocitySelected > 100) {
+            //dentro de este bloque se formula la penalizacion
+
+            //OverSpeed calcula la resta que hay de la velocidad seleccionada menos 100 que significa la velocidad maxima
+            double overSpeed = velocitySelected - 100;
+            //Si la velocidad es mayor a 100 entonces se aplica la penalizacion de combustible por lo tanto la nave
+            //consume mas combustible
+            speedPenalty = 1.0 + (0.05 * (overSpeed / 10.0));
+        }
+        //aplicamos el consumo base * la penalizaicon de velocidad que se obtuvo.
+        double adjustedConsumption = baseFuelConsumption * speedPenalty;
+        //Hacemos el calculo de la distancia dividido por 100 que son los km por litro y lo multiplicamos por el consumo ajustado
+        double totalFuelNeeded = (distance / 100.0) * adjustedConsumption;
+
+        // Mostrar resultados
         System.out.println("\nCÁLCULO DE RECURSOS");
-        System.out.println("Consumo base: 8.8 L/100km");
-        System.out.println("Factor por velocidad: " + String.format("%.2f", totalFuelNeeded / (distance / 100.0)));
-        System.out.println("Consumo total de combustible: " + String.format("%.2f", totalFuelNeeded) + " litros");
-    
-        // Mensaje para que el usuario regrese al menú principal
-        int volverMenu;
-        do {
-            System.out.print("\nIngresa '1' para volver al menú principal: ");
-            volverMenu = scanner.nextInt();
-            if (volverMenu != 1) {
-                System.out.println("Opción no válida. Inténtalo de nuevo.");
+        System.out.println("===================");
+        System.out.println("Datos del viaje:");
+        System.out.println("- Velocidad seleccionada: " + velocitySelected + " km/h");
+        System.out.println("- Distancia a recorrer: " + distance + " km");
+        System.out.printf("- Tiempo estimado: %.0f horas%n", hoursSelected);
+        
+        System.out.println("\nConsumo de combustible:");
+        System.out.println("- Consumo Estimado: " + baseFuelConsumption + " L/100km");
+        System.out.println("- Factor por velocidad: " + String.format("%.2f", speedPenalty));
+        System.out.println("- Combustible total necesario: " + String.format("%.2f", totalFuelNeeded) + " litros");
+        
+        System.out.println("\nConsumo de oxígeno:");
+        System.out.println("- Consumo por hora: " + oxygenPerHour + " litros");
+        System.out.println("- Oxígeno total necesario: " + String.format("%.2f", totalOxygenNeeded) + " litros");
+
+        if (velocitySelected > 100) {
+            System.err.println("\n¡Atención! La velocidad seleccionada excede la velocidad máxima permitida.");
+            System.out.println("Deseas continuar con la velocidad seleccionada? (S/N)");
+            //Se crea un nuevo scanner para que el usuario pueda responder con tipo string y para usar otro metodo
+            //metodo de scanner.
+            String continuar = scanner.nextLine();
+            if (!continuar.equalsIgnoreCase("s")) {
+                System.out.println("Por favor, ingresa la velocidad de tu nave nuevamente(en km/h): ");
+                selectVelocity();
+            }else{
+                return totalFuelNeeded;
             }
-        } while (volverMenu != 1);
-    
-        return totalFuelNeeded;
+        }
+        return totalFuelNeeded; // Mantenemos el retorno del combustible por compatibilidad
     }
 
     private static void selectNave() {
@@ -279,37 +314,114 @@ public class App {
             }
         }
 
-
-
-        private static void iniciar() {
-            System.out.println("=====================================================");
-            System.out.println("               PREPARÁNDONOS PARA EL VIAJE           ");
-            System.out.println("=====================================================");
+    private static void iniciar() {
+        System.out.println("=====================================================");
+        System.out.println("               PREPARÁNDONOS PARA EL VIAJE           ");
+        System.out.println("=====================================================");
         
-            System.out.println("Planeta seleccionado: " + planetS);
-            System.out.println("Distancia estimada desde la Tierra: " + distance + " km");
-            System.out.println("Velocidad seleccionada: " + velocitySelected + " km/h");
-            System.out.println("Nave seleccionada: " + selectedNave);
+        System.out.println("Planeta seleccionado: " + planetS);
+        System.out.println("Distancia estimada desde la Tierra: " + distance + " km");
+        System.out.println("Velocidad seleccionada: " + velocitySelected + " km/h");
+        System.out.println("Nave seleccionada: " + selectedNave);
+        
+        // Calcula y muestra el consumo estimado de combustible
+        double estimatedFuel = calculateResources(velocitySelected);
+        System.out.println("Consumo estimado de combustible: " + String.format("%.2f", estimatedFuel) + " litros");
+        
+        // Mensaje final de inicio
+        System.out.println("=====================================================");
+        System.out.println("TODO LISTO: TU GRAN VIAJE HACIA " + planetS + " COMIENZA AHORA.");
+        System.out.println("-----------------------------------------------------");
+        
+        // Mensaje de desvío
+        System.out.println(mensajeDesvio[0]);
+        System.out.println("=====================================================");
+        //showTravelProgress(estimatedFuel, 88.2 * hoursSelected);
+    }
+
+    private static void showTravelProgress(double totalFuelNeeded, double totalOxygenNeeded) throws InterruptedException {
+        double currentDistance = 0;
+        double currentTime = 0;
+        double currentFuel = totalFuelNeeded;
+        double currentOxygen = totalOxygenNeeded;
+        int barLength = 50; // Longitud de la barra de progreso
+
+        System.out.println("\n¡INICIANDO VIAJE A " + planetS.toUpperCase() + "!");
+        System.out.println("=============================================");
+
+            while (currentDistance < distance) {
+                // Limpiar consola no funciona no se por que :(
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+
+                // Calcular porcentajes
+                // Solo es para mostrarlos al final del largo de la barra.
+                double distancePercent = (currentDistance / distance) * 100;
+                double timePercent = (currentTime / hoursSelected) * 100;
+                double fuelPercent = ((totalFuelNeeded - currentFuel) / totalFuelNeeded) * 100;
+                double oxygenPercent = ((totalOxygenNeeded - currentOxygen) / totalOxygenNeeded) * 100;
+
+                // Crear barras de progreso
+                System.out.println("Progreso del viaje a " + planetS + ":");
+                System.out.println("---------------------------------------------");
+                
+                // Barra de distancia
+                System.out.printf("Distancia [");
+                //igual que la barra inicial de decoracion esta formula calcula en base a procentaje el numero de
+                //caracteres que se van a mostrar
+                int completed = (int) (distancePercent * barLength / 100);
+                for (int i = 0; i < barLength; i++) {
+                    if (i < completed) System.out.print("#");
+                    else System.out.print("" );
+                }
+                System.out.printf("] %.1f%%\n", distancePercent);
+                System.out.printf("%.0f/%.0f km\n\n", currentDistance, distance);
+
+                // Barra de tiempo
+                System.out.printf("Tiempo    [");
+                completed = (int) (timePercent * barLength / 100);
+                for (int i = 0; i < barLength; i++) {
+                    if (i < completed) System.out.print("#");
+                    else System.out.print(" ");
+                }
+                System.out.printf("] %.1f%%\n", timePercent);
+                System.out.printf("%.1f/%.1f horas\n\n", currentTime, hoursSelected);
+
+                // Barra de combustible
+                System.out.printf("Combustible[");
+                completed = (int) (fuelPercent * barLength / 100);
+                for (int i = 0; i < barLength; i++) {
+                    if (i < completed) System.out.print("#");
+                    else System.out.print(" ");
+                }
+                System.out.printf("] %.1f%%\n", fuelPercent);
+                System.out.printf("%.1f/%.1f litros\n\n", currentFuel, totalFuelNeeded);
+
+                // Barra de oxígeno
+                System.out.printf("Oxígeno   [");
+                completed = (int) (oxygenPercent * barLength / 100);
+                for (int i = 0; i < barLength; i++) {
+                    if (i < completed) System.out.print("=");
+                    else System.out.print(" ");
+                }
+                System.out.printf("] %.1f%%\n", oxygenPercent);
+                System.out.printf("%.1f/%.1f litros\n", currentOxygen, totalOxygenNeeded);
+
+                // Incrementar valores (simulación de progreso)
+                double increment = distance / 100; // Dividimos el viaje en 100 partes
+                currentDistance += increment;
+                currentTime += hoursSelected / 100;
+                currentFuel -= totalFuelNeeded / 100;
+                currentOxygen -= totalOxygenNeeded / 100;
+
+                // Esperar un momento antes de la siguiente actualización
+                Thread.sleep(120); // 200ms entre actualizaciones
+            }
+
+            System.out.println("\n¡VIAJE COMPLETADO CON ÉXITO!");
+            System.out.println("Has llegado a " + planetS);
+            System.out.println("=============================================");
             
-            // Calcula y muestra el consumo estimado de combustible
-            double estimatedFuel = calculateResources(velocitySelected);
-            System.out.println("Consumo estimado de combustible: " + String.format("%.2f", estimatedFuel) + " litros");
         
-            // Mensaje final de inicio
-            System.out.println("=====================================================");
-            System.out.println("TODO LISTO: TU GRAN VIAJE HACIA " + planetS + " COMIENZA AHORA.");
-            System.out.println("-----------------------------------------------------");
-        
-            // Mensaje de desvío
-            System.out.println(mensajeDesvio[0]);
-            System.out.println("=====================================================");
-        }
+    }
 }
-
-    /*
-     * private static void pressEnter() {
-     * System.out.println("Presione ENTER para continuar");
-     * scanner.nextLine();
-     * }
-     */
-
