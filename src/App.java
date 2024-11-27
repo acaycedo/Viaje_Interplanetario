@@ -302,6 +302,8 @@ public class App {
     }
 
     private static void selectNave() {
+        boolean start = true;
+        do {
             System.out.println("               ----------------------------------    ");
             System.out.println("                         NAVES DISPONIBLES!          ");
             System.out.println("               ----------------------------------    ");
@@ -317,13 +319,16 @@ public class App {
             // Validar la selección
             if (opcion >= 1 && opcion <= naves.length) {
                 selectedNave = naves[opcion - 1];
-                System.out.println("Has seleccionado la nave: " + selectedNave);
+                System.out.println("Has seleccionado la nave: " + selectedNave + "\n");
+                start = false;
             } else {
                 System.out.println("Selección inválida. Inténtalo de nuevo.");
             }
+        } while (start);
+            
         }
 
-    private static void iniciar() {
+    /*private static void iniciar() {
         System.out.println("=====================================================");
         System.out.println("               PREPARÁNDONOS PARA EL VIAJE           ");
         System.out.println("=====================================================");
@@ -347,6 +352,7 @@ public class App {
         System.out.println("=====================================================");
         //showTravelProgress(estimatedFuel, 88.2 * hoursSelected);
     }
+        */
 
     private static void showTravelProgress(double totalFuelNeeded, double totalOxygenNeeded) throws InterruptedException {
         double currentDistance = 0;
