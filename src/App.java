@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class App {
@@ -13,7 +14,7 @@ public class App {
             "Neptuno es el planeta más alejado del Sol."
     };
     static String[] naves = { "Nova Tempest", "Solar Phantom", "Infinity Hawk", "Astral Pathfinder" };
-    static String[] mensajeDesvio = {"Ou! Creo que tendremos que tomar un desvio, ya que se pueden presentar fallas si seguimos por este camino"};
+    static String[] mensajeDesvio = {"Ou! Creo que tendremos que tomar un desvio, ya que se pueden presentar fallas si seguimos por este camino","Algo ha golpeado la nave","Hay un agujero de gusano se tomaran maniobras evasivas.","Cuidado hay cargamento que esta suelto, un personal estara pasando para arreglar el inconveniente"};
     //Se establecio una variable global tipo entero para poder usarla en cualquier funcion y no repetir
     static Integer option;
     //Se establecio una variable global tipo Scanner para poder usarla en cualquier funcion y no repetir
@@ -24,6 +25,7 @@ public class App {
     static double distance = 0.0;
     static String selectedNave = ""; // Variable para almacenar la nave seleccionada
     static double hoursSelected = 0.0;
+    static String messageEmergency="";
 
     public static void main(String[] args) throws Exception {
 
@@ -33,9 +35,12 @@ public class App {
         System.out.println("  (recuerda tu punto inicial es el planeta Tierra)");
         System.out.println(" ==================================================");
 
-         loadBarr();
-  
+        loadBarr();
+        showMenu();
+    }
 
+
+    private static void showMenu() throws InterruptedException {
         do {
             System.out.println("|||   OPCIONES DISPONIBLES PARA EMPEZAR EL VIAJE  |||");
             System.out.println("||       Selecciona para el proceso del viaje!     ||");
@@ -44,13 +49,12 @@ public class App {
             System.out.println("|3.-------------Seleccionar una nave espacial.------|");
             System.out.println("|4.-------------Seleccionar Recursos.---------------|");
             System.out.println("|5.-------------INICIAR VIAJE!.---------------------|");
-            System.out.println("|6.-------------Salir.------------------------------|");
+            System.out.println("|0.-------------Salir.------------------------------|");
             option = scanner.nextInt();
             scanner.nextLine();
             switch (option) {
                 case 1:
                     planetS = selectPlanet(option);
-                    
                     break;
                 case 2:
                     if (planetS=="") {
@@ -63,13 +67,18 @@ public class App {
                     selectNave();
                     break;
                 case 4:
-                    calculateResources(velocitySelected);
+                    if (planetS=="" || velocitySelected<=0.0 || selectedNave=="" || hoursSelected<=0.0) {
+                        System.out.println("¡No puedo calcular los recursos si no se han establecido las opciones!\n");
+                    } else {
+                        calculateResources(velocitySelected);
+                    }
                     break;
                 case 5:
+                    if (planetS=="" || velocitySelected<=0.0 || selectedNave=="" || hoursSelected<=0.0) {  
+                        System.out.println("¡No puedo mostrar el progreso del viaje si no se han establecido las opciones!\n");
+                    }else {
                     showTravelProgress(hoursSelected, distance);
-                    break;
-                case 6:
-                    System.out.println("Gracias por viajar con nosotros. Vueleve pronto ;D");
+                    }
                     break;
                 case 0:
                     System.out.println("Cancelar Vuelo.");
@@ -293,6 +302,8 @@ public class App {
     }
 
     private static void selectNave() {
+        boolean start = true;
+        do {
             System.out.println("               ----------------------------------    ");
             System.out.println("                         NAVES DISPONIBLES!          ");
             System.out.println("               ----------------------------------    ");
@@ -308,13 +319,16 @@ public class App {
             // Validar la selección
             if (opcion >= 1 && opcion <= naves.length) {
                 selectedNave = naves[opcion - 1];
-                System.out.println("Has seleccionado la nave: " + selectedNave);
+                System.out.println("Has seleccionado la nave: " + selectedNave + "\n");
+                start = false;
             } else {
                 System.out.println("Selección inválida. Inténtalo de nuevo.");
             }
+        } while (start);
+            
         }
 
-    private static void iniciar() {
+    /*private static void iniciar() {
         System.out.println("=====================================================");
         System.out.println("               PREPARÁNDONOS PARA EL VIAJE           ");
         System.out.println("=====================================================");
@@ -338,6 +352,7 @@ public class App {
         System.out.println("=====================================================");
         //showTravelProgress(estimatedFuel, 88.2 * hoursSelected);
     }
+        */
 
     private static void showTravelProgress(double totalFuelNeeded, double totalOxygenNeeded) throws InterruptedException {
         double currentDistance = 0;
@@ -345,14 +360,15 @@ public class App {
         double currentFuel = totalFuelNeeded;
         double currentOxygen = totalOxygenNeeded;
         int barLength = 50; // Longitud de la barra de progreso
+        Random random = new Random();
 
         System.out.println("\n¡INICIANDO VIAJE A " + planetS.toUpperCase() + "!");
         System.out.println("=============================================");
 
             while (currentDistance < distance) {
                 // Limpiar consola no funciona no se por que :(
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
+                //System.out.print("\033[H\033[2J");
+                //System.out.flush();
 
                 // Calcular porcentajes
                 // Solo es para mostrarlos al final del largo de la barra.
@@ -373,6 +389,8 @@ public class App {
                 for (int i = 0; i < barLength; i++) {
                     if (i < completed) System.out.print("#");
                     else System.out.print("" );
+                    
+                    
                 }
                 System.out.printf("] %.1f%%\n", distancePercent);
                 System.out.printf("%.0f/%.0f km\n\n", currentDistance, distance);
@@ -403,6 +421,7 @@ public class App {
                 for (int i = 0; i < barLength; i++) {
                     if (i < completed) System.out.print("=");
                     else System.out.print(" ");
+                    randomizador(mensajeDesvio,random, completed, messageEmergency);
                 }
                 System.out.printf("] %.1f%%\n", oxygenPercent);
                 System.out.printf("%.1f/%.1f litros\n", currentOxygen, totalOxygenNeeded);
@@ -414,8 +433,13 @@ public class App {
                 currentFuel -= totalFuelNeeded / 100;
                 currentOxygen -= totalOxygenNeeded / 100;
 
+                
+                
                 // Esperar un momento antes de la siguiente actualización
                 Thread.sleep(120); // 200ms entre actualizaciones
+
+                
+
             }
 
             System.out.println("\n¡VIAJE COMPLETADO CON ÉXITO!");
@@ -423,5 +447,20 @@ public class App {
             System.out.println("=============================================");
             
         
+    }
+
+
+    private static String randomizador(String[] mensajeDesvio, Random random, int completed, String messageEmergency) {
+        if(completed > 40){
+            if(random.nextInt(1000) < 3){
+                
+                messageEmergency = mensajeDesvio[random.nextInt(mensajeDesvio.length)];
+                System.out.println("\n\n" + messageEmergency);
+                System.out.println("Presione enter para continuar");
+                scanner.nextLine();
+                return messageEmergency;
+            }
+        }
+        return null;
     }
 }
