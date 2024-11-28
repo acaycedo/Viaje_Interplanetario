@@ -17,7 +17,7 @@ DEVSENIOR</a></h1>
 
 <h3 align="center" > <img src="https://media.giphy.com/media/iY8CRBdQXODJSCERIr/giphy.gif" width="30" height="30" style="margin-right: 10px;">Trabajo Colaborativo 🤝 </h3>
 
-## ESTRUCTURA 📂
+### ESTRUCTURA 📂
 
 Es un proyecto con estructura basica sin ningun enfoque en maven u otras alternativas
 
@@ -25,9 +25,9 @@ Es un proyecto con estructura basica sin ningun enfoque en maven u otras alterna
 - `lib`: Contiene las librerías predefinidas
 - `bin` Contiene los diferentes archivos binarios que se obtienen de compilar el código
 
-## INTEGRANTES UNIVERSIDAD IBEROAMERICANA
+### INTEGRANTES UNIVERSIDAD IBEROAMERICANA
  - ANDRES FELIPE CAYCEDO JIMENEZ
 
-## INTEGRANTES ORGINALES DE TODO EL PROYECTO
+### INTEGRANTES ORGINALES DE TODO EL PROYECTO
  - JOHAN DAVID TOVAR ACEVEDO
  - ANDRES FELIPE CAYCEDO JIMENEZ
