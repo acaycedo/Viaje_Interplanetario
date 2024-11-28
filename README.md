@@ -26,9 +26,11 @@ Es un proyecto con estructura basica sin ningun enfoque en maven u otras alterna
 - `lib`: Contiene las librerías predefinidas
 - `bin` Contiene los diferentes archivos binarios que se obtienen de compilar el código
 
-### INTEGRANTES UNIVERSIDAD IBEROAMERICANA
- - ANDRES FELIPE CAYCEDO JIMENEZ
+
 
 ### INTEGRANTES ORGINALES DE TODO EL PROYECTO
  - JOHAN DAVID TOVAR ACEVEDO
+ - ANDRES FELIPE CAYCEDO JIMENEZ
+   
+### INTEGRANTES UNIVERSIDAD IBEROAMERICANA
  - ANDRES FELIPE CAYCEDO JIMENEZ
