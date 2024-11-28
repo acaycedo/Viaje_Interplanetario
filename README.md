@@ -27,8 +27,8 @@ DEVSENIOR</a></h1>
 </a>
 
 - 📝 Video de Presentación [Youtube](https://youtu.be/Eb4P1QBq0Ww)
-
 - 💬 Primer Reto en **DevSenior**
+- El desafío consistirá en desarrollar un programa que simule la planificación y ejecución de un viaje interplanetario, donde el usuario podrá elegir destinos calcular la distancia y el tiempo de viaje, y gestionar los recursos de la nave. El objetivo es aplicar conceptos básicos de programación de forma práctica y entretenida en Java segun lo visto en clase.
 <br/>
 <h3 align="center" > <img src="https://media.giphy.com/media/iY8CRBdQXODJSCERIr/giphy.gif" width="30" height="30" style="margin-right: 10px;">Trabajo Colaborativo 🤝 </h3>
 
